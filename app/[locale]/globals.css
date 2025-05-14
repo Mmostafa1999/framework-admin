@@ -1,0 +1,263 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+:root {
+  /* Primary Theme Colors */
+  --primary-blue: #2563eb;
+  --secondary-blue: #1d4ed8;
+  --primary-green: #16a34a;
+  --accent-green: #22c55e;
+  
+  /* Reference-inspired Theme Colors */
+  --ref-teal-light: #00916f;
+  --ref-teal-dark: #00785d;
+  --ref-teal-800: #115e59;
+  --ref-teal-900: #134e4a;
+  --ref-slate-900: #0f172a;
+  
+  /* Animation Variables */
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+  --ease-spring: cubic-bezier(0.25, 0.1, 0.25, 1.5);
+}
+
+@layer base {
+  :root {
+    --font-rubik: 'Rubik', system-ui, sans-serif;
+    --font-cairo: 'Cairo', system-ui, sans-serif;
+  }
+  
+  .font-rubik {
+    font-family: var(--font-rubik);
+  }
+  
+  .font-cairo {
+    font-family: var(--font-cairo);
+  }
+  
+  html[lang="en"] body {
+    font-family: var(--font-rubik);
+  }
+  
+  html[lang="ar"] body {
+    font-family: var(--font-cairo);
+  }
+  
+  
+ 
+}
+
+/* Animation presets */
+@layer components {
+  /* Gradient animation */
+  .animate-gradient-shift {
+    @apply animate-[gradientShift_8s_ease_infinite];
+    background-size: 400% 400%;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Float animation */
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  /* Sidebar styled components */
+  .sidebar-link {
+    @apply p-3 rounded-lg flex items-center cursor-pointer transition-all duration-300;
+  }
+  
+  .sidebar-link-hover {
+    @apply hover:bg-white/15 hover:scale-105;
+  }
+  
+  .sidebar-link-active {
+    @apply bg-white/20 border-l-4 border-white;
+  }
+  
+  .sidebar-link-icon {
+    @apply w-6 h-6 flex items-center justify-center;
+  }
+  
+  .sidebar-link-text {
+    @apply ml-3 transition-opacity duration-300;
+  }
+  
+  /* Hover effects similar to reference */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-lift:hover {
+    @apply -translate-y-1 shadow-xl;
+  }
+  
+  /* Button effects */
+  .btn-hover-effect {
+    @apply transition-all transform;
+  }
+  
+  .btn-hover-effect:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+  
+  .btn-hover-effect:active {
+    @apply scale-95;
+  }
+}
+
+/* Default scrollbar styling without custom colors */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Hide scrollbar for projects container */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .user-table-container {
+    overflow-x: auto;
+  }
+  
+  .user-mobile-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .user-mobile-row div {
+    padding: 0.25rem 0;
+  }
+  
+  .user-mobile-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  /* Form centering for small screens */
+  .dialog-center-mobile {
+    @apply mx-auto max-w-[95%] flex flex-col items-center;
+  }
+}
+
+/* RTL-specific styles */
+html[dir="rtl"] .rtl {
+  text-align: right;
+}
+
+/* Fix form UI for RTL */
+html[dir="rtl"] .rtl select,
+html[dir="rtl"] .rtl input,
+html[dir="rtl"] .rtl .multi-select {
+  text-align: right;
+}
+
+/* Add proper spacing for the dialog close button in RTL mode */
+html[dir="rtl"] .rtl [data-radix-dialog-close] {
+  left: 1rem;
+  right: auto;
+}
+
+/* Adjust spacing for button icons in RTL mode */
+html[dir="rtl"] button svg:first-child:not(:last-child) {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* Adding proper spacing for form elements in RTL mode */
+html[dir="rtl"] .rtl .space-x-2 > * + * {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+html[dir="rtl"] .rtl .space-x-4 > * + * {
+  margin-right: 1rem;
+  margin-left: 0;
+}

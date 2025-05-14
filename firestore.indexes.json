@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "specifications",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "controlId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "number",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+} 

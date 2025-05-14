@@ -1,0 +1,146 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin() {
+      // Check if the user is authenticated first
+      let isAuthed = request.auth != null;
+      
+      // Check if the user exists in the users collection
+      let userExists = isAuthed && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid));
+      
+      // Check if the user has the Admin role
+      let hasAdminRole = userExists && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
+      
+      return hasAdminRole;
+    }
+    
+    // Allow authenticated users to create documents in the "users" collection.
+    // The {userId} wildcard means this rule applies to any document in the "users" collection.
+    // The `request.auth != null` condition checks if the user making the request is authenticated.
+    match /users/{userId} {
+      allow create: if request.auth != null;
+      
+      // Allow a user to read their own data
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Allow admins to read all user data
+      allow read, list: if isAdmin();
+      
+      // Allow admins to update or delete any user
+      allow update, delete: if isAdmin();
+    }
+    
+    // Rules for organizations collection - Admin only
+    match /organizations/{organizationId} {
+      // Allow any authenticated user to read organizations
+      allow read: if request.auth != null;
+      
+      // Only allow admin users to create, update, and delete organizations
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Rules for frameworks collection - Admin only
+    match /frameworks/{frameworkId} {
+      // Allow any authenticated user to read frameworks
+      allow read: if request.auth != null;
+      
+      // Only allow admin users to create, update, and delete frameworks
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+      
+      // Rules for domains subcollection within frameworks
+      match /domains/{domainId} {
+        // Allow any authenticated user to read domains
+        allow read: if request.auth != null;
+        
+        // Only allow admin users to create, update, and delete domains
+        allow create: if isAdmin();
+        allow update: if isAdmin();
+        allow delete: if isAdmin();
+        
+        // Rules for controls subcollection within domains
+        match /controls/{controlId} {
+          // Allow any authenticated user to read controls
+          allow read: if request.auth != null;
+          
+          // Only allow admin users to create, update, and delete controls
+          allow create: if isAdmin();
+          allow update: if isAdmin();
+          allow delete: if isAdmin();
+          
+          // Rules for specifications subcollection within controls
+          match /specifications/{specificationId} {
+            // Allow any authenticated user to read specifications
+            allow read: if request.auth != null;
+            
+            // Only allow admin users to create, update, and delete specifications
+            allow create: if isAdmin();
+            allow update: if isAdmin();
+            allow delete: if isAdmin();
+          }
+        }
+      }
+    }
+
+    // Rules for assessmentCriteria collection
+    match /assessmentCriteria/{frameworkId} {
+      // Allow any authenticated user to read criteria
+      allow read: if request.auth != null;
+      
+      // Only allow admin users to create, update, and delete criteria
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Rules for projects collection - Admin only
+    match /projects/{projectId} {
+      // Allow any authenticated user to read projects
+      allow read: if request.auth != null;
+      
+      // Only allow admin users to create, update, and delete projects
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Rules for domains collection - Admin only
+    match /domains/{domainId} {
+      // Allow any authenticated user to read domains
+      allow read: if request.auth != null;
+      
+      // Only allow admin users to create, update, and delete domains
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Rules for specifications collection
+    match /npc/document/domains/{domainId}/controls/{controlId}/specifications/{specificationId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Legacy rules for specifications collection (to be removed after migration)
+    match /npc/document/domains/{domainId}/controls/{controlId}/specifications/{specificationId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Rules for top-level specifications collection (to be removed after migration)
+    match /specifications/{specificationId} {
+      allow read: if request.auth != null;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Add other rules for other collections here
+  }
+}
+
